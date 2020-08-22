@@ -11,8 +11,8 @@ from tqdm import tqdm_notebook #(Optional, used for progress-bars)
 ### API
 bitmex_api_key = '[REDACTED]'    #Enter your own API-key here
 bitmex_api_secret = '[REDACTED]' #Enter your own API-secret here
-binance_api_key = '0PlsIht6UlvPkzwvZKLqI5LpVvWOPKRQ9QTMsyD3cwA8CE9D397Xak7OSs35enDN'    #Enter your own API-key here
-binance_api_secret = 'ON2Z3gLci9HtlsZ6N8MTuuBJPb6CRYz61S8uIG3ZaaHVDqI1yUf10nHny1rpLCTm' #Enter your own API-secret here
+binance_api_key = '[REDACTED]'    #Enter your own API-key here
+binance_api_secret = '[REDACTED]' #Enter your own API-secret here
 
 ### CONSTANTS
 binsizes = {"1m": 1, "5m": 5, "2h": 120, "1d": 1440}
