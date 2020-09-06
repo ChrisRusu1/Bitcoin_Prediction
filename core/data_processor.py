@@ -26,6 +26,7 @@ class DataLoader():
 
         data_windows = np.array(data_windows).astype(float)
         data_windows = self.normalise_windows(data_windows, single_window=False) if normalise else data_windows
+        
 
         x = data_windows[:, :-1]
         y = data_windows[:, -1, [0]]
@@ -73,6 +74,7 @@ class DataLoader():
     def normalise_windows(self, window_data, single_window=False):
         '''Normalise window with a base value of zero'''
         normalised_data = []
+        counter = 0
         window_data = [window_data] if single_window else window_data
         for window in window_data:
             normalised_window = []
@@ -82,3 +84,4 @@ class DataLoader():
             normalised_window = np.array(normalised_window).T # reshape and transpose array back into original multidimensional format
             normalised_data.append(normalised_window)
         return np.array(normalised_data)
+        

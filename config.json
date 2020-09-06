@@ -7,13 +7,13 @@
 			"ewm8","ewm13","ewm21","ewm55"
 			
 		],
-		"sequence_length": 25,
+		"sequence_length": 40,
 		"train_test_split": 0.85,
 		"normalise": true
 	},
 	"training": {
-		"epochs": 10,
-		"batch_size": 25
+		"epochs": 50,
+		"batch_size": 40
 	},
 	"model": {
 		"loss": "mse",
@@ -23,7 +23,7 @@
 			{
 				"type": "lstm",
 				"neurons": 750,
-				"input_timesteps": 24,
+				"input_timesteps": 39,
 				"input_dim": 6,
 				"return_seq": true
 			},
@@ -38,7 +38,7 @@
 			},
 			{
 				"type": "lstm",
-				"neurons": 100,
+				"neurons": 750,
 				"return_seq": false
 			},
 			{

@@ -10,16 +10,7 @@ import math
 import matplotlib.pyplot as plt
 from core.data_processor import DataLoader
 from core.model import Model
-import os
-import math
-import numpy as np
-import datetime as dt
-from numpy import newaxis
-from core.utils import Timer
-from keras.layers import Dense, Activation, Dropout, LSTM
-from keras.models import Sequential, load_model
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from tensorflow import keras
+
 
 
 def plot_results(predicted_data, true_data):
@@ -50,7 +41,8 @@ def main():
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
 
         data = DataLoader(
-            os.path.join('data', configs['data']['filename']),
+            os.path.join('data', 
+            configs['data']['filename']),
             configs['data']['train_test_split'],
             configs['data']['columns']
         )
@@ -111,7 +103,7 @@ def main():
             seq_len=configs['data']['sequence_length'],
             normalise=configs['data']['normalise']
         )
-        model.load_model(r"C:\Users\ZeePu\Documents\bitcoin_Prediction\saved_models\16082020-181902-e10.h5")
+        model.load_model(r"C:\Users\chris\Documents\Bitcoin_Prediction\saved_models\21082020-234453-e50.h5")
         #configs['data']['sequence_length'] = 12
         predictions = model.predict_sequences_multiple(x_test, configs['data']['sequence_length'], configs['data']['sequence_length'])
         # predictions = model.predict_sequence_full(x_test, configs['data']['sequence_length'])
