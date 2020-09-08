@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import pandas as pd
+from sklearn import preprocessing
 
 class DataLoader():
     """A class for loading and transforming data for the lstm model"""
@@ -71,7 +72,37 @@ class DataLoader():
         y = window[-1, [0]]
         return x, y
 
+    def normalise_windowsnew(self, window_data, single_window=False):
+        '''Normalise window with a base value of zero'''
+        normalised_data = []
+        window_data = [window_data] if single_window else window_data
+        for window in window_data:
+            normalised_window = []
+            for col_i in range(window.shape[1]):
+                std_scale = preprocessing.StandardScaler().fit(window)
+                normalised_col = [std_scale.transform(window) for p in window[:, col_i]]
+                normalised_window.append(normalised_col)
+
+            normalised_window = np.array(normalised_window).T # reshape and transpose array back into original multidimensional format
+            normalised_data.append(normalised_window)
+        return np.array(normalised_data)
+
     def normalise_windows(self, window_data, single_window=False):
+            '''Normalise window with a base value of zero'''
+            normalised_data = []
+            window_data = [window_data] if single_window else window_data
+            for window in window_data:
+                normalised_window = []
+                
+                std_scale = preprocessing.StandardScaler().fit(window)
+                normalised_col = std_scale.transform(window) 
+                #normalised_window.append(normalised_col)
+                normalised_window = normalised_col
+                normalised_window = np.array(normalised_window) # reshape and transpose array back into original multidimensional format
+                normalised_data.append(normalised_window)
+            return np.array(normalised_data)
+
+    def normalise_windowsold(self, window_data, single_window=False):
         '''Normalise window with a base value of zero'''
         normalised_data = []
         counter = 0
@@ -84,4 +115,13 @@ class DataLoader():
             normalised_window = np.array(normalised_window).T # reshape and transpose array back into original multidimensional format
             normalised_data.append(normalised_window)
         return np.array(normalised_data)
+
+    def normalise_windows2(self, window_data, single_window=False):
+        std_scale = preprocessing.StandardScaler().fit(window_data)
+        x_train_norm = std_scale.transform(window_data)
+        print(x_train_norm)
+        return np.array(x_train_norm)
+
+
+
         

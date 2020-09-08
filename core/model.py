@@ -5,7 +5,7 @@ import datetime as dt
 from numpy import newaxis
 from core.utils import Timer
 import tensorflow as tf
-from keras.layers import Dense, Activation, Dropout, LSTM
+from keras.layers import Dense, Activation, Dropout, LSTM, Flatten
 from keras.models import Sequential, load_model
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 
@@ -34,6 +34,8 @@ class Model():
 
 			if layer['type'] == 'dense':
 				self.model.add(Dense(neurons, activation=activation))
+			if layer['type'] == 'Flatten':
+				self.model.add(Flatten())
 			if layer['type'] == 'lstm':
 				self.model.add(LSTM(neurons, input_shape=(input_timesteps, input_dim), return_sequences=return_seq))
 			if layer['type'] == 'dropout':

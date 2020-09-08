@@ -4,27 +4,28 @@
 		"columns": [
 			"close",
 			"volume",
-			"ewm8","ewm13","ewm21","ewm55"
+			"ewm8","ewm13","ewm21","ewm55","StotchRSI"
 			
 		],
-		"sequence_length": 40,
-		"train_test_split": 0.85,
+		"sequence_length": 30,
+		"train_test_split": 0.9,
 		"normalise": true
 	},
 	"training": {
-		"epochs": 50,
-		"batch_size": 40
+		"epochs": 15,
+		"batch_size": 30
 	},
 	"model": {
 		"loss": "mse",
 		"optimizer": "adam",
 		"save_dir": "saved_models",
 		"layers": [
+
 			{
 				"type": "lstm",
-				"neurons": 750,
-				"input_timesteps": 39,
-				"input_dim": 6,
+				"neurons": 400,
+				"input_timesteps": 29,
+				"input_dim": 7,
 				"return_seq": true
 			},
 			{
@@ -33,12 +34,12 @@
 			},
 			{
 				"type": "lstm",
-				"neurons": 750,
+				"neurons": 400,
 				"return_seq": true
 			},
 			{
 				"type": "lstm",
-				"neurons": 750,
+				"neurons": 400,
 				"return_seq": false
 			},
 			{
