@@ -4,5 +4,7 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.pythonPath": "C:\\Users\\chris\\anaconda3\\envs\\tfgpu3.5.4\\python.exe"
+	}
 }
