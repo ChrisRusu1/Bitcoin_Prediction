@@ -8,7 +8,7 @@ import tensorflow as tf
 from keras.layers import Dense, Activation, Dropout, LSTM, Flatten
 from keras.models import Sequential, load_model
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
-
+import matplotlib.pyplot as plt
 
 class Model():
 	"""A class for an building and inferencing an lstm model"""
@@ -117,6 +117,23 @@ class Model():
 				curr_frame = np.insert(curr_frame, [window_size-2], predicted[-1], axis=0)
 			prediction_seqs.append(predicted)
 		return prediction_seqs
+
+	def predict_sequences_multipleNew(self, data, ytrain):
+		print('[Model] Predicting Sequences Multiple...new')
+		y_pred = []
+		curr_frame = data
+		for j in range(len(data)):
+			y_pred.append(self.model.predict(curr_frame[newaxis,:,:])[0,0])
+			curr_frame = curr_frame[1:]
+			curr_frame = np.insert(curr_frame, [len(data)-2], y_pred[-1], axis=0)
+		y_train = ytrain
+		plt.plot(np.arange(len(y_train), len(y_train) + len(y_train)), y_train[:,0], marker='.', label="true")
+		plt.plot(np.arange(len(y_train), len(y_train) + len(y_train)), y_pred, 'r', label="prediction")
+		plt.ylabel('Value')
+		plt.xlabel('Time Step')
+		plt.legend()
+		plt.show()
+
 
 	def predict_sequence_full(self, data, window_size):
 		#Shift the window by 1 new prediction each time, re-run predictions on new window

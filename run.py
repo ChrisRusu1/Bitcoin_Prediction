@@ -10,6 +10,9 @@ import math
 import matplotlib.pyplot as plt
 from core.data_processor import DataLoader
 from core.model import Model
+import pandas as pd
+import tensorflow
+import keras
 
 
 
@@ -35,8 +38,8 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
 
 
 def main():
-    do = True
-    if do:
+    do = 2
+    if do == 0:
         configs = json.load(open('config.json', 'r'))
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
 
@@ -89,11 +92,12 @@ def main():
 
         plot_results_multiple(predictions, y_test, configs['data']['sequence_length'])
         # plot_results(predictions, y_test)
-    else:
+    elif do == 1:
         configs = json.load(open('config.json', 'r'))
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
         model = Model()
         model.build_model(configs)
+
         data = DataLoader(
             os.path.join('data', configs['data']['filename']),
             configs['data']['train_test_split'],
@@ -103,7 +107,7 @@ def main():
             seq_len=configs['data']['sequence_length'],
             normalise=configs['data']['normalise']
         )
-        model.load_model(r"C:\Users\chris\Documents\Bitcoin_Prediction\saved_models\21082020-234453-e50.h5")
+        model.load_model(r"C:\Users\chris\Documents\Bitcoin_Prediction\saved_models\10092020-152418-e31.h5")
         #configs['data']['sequence_length'] = 12
         predictions = model.predict_sequences_multiple(x_test, configs['data']['sequence_length'], configs['data']['sequence_length'])
         # predictions = model.predict_sequence_full(x_test, configs['data']['sequence_length'])
@@ -112,6 +116,23 @@ def main():
 
         plot_results_multiple(predictions, y_test, configs['data']['sequence_length']) #configs['data']['sequence_length']
         #plot_results(predictions, y_test)
+    else:
+        configs = json.load(open('config.json', 'r'))
+        if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
+        model = Model()
+        model.build_model(configs)
+        model.load_model(r"C:\Users\chris\Documents\Bitcoin_Prediction\saved_models\23092020-232350-e31.h5")
+        normed_test_data = pd.read_csv(r"C:\Users\chris\Documents\Bitcoin_Prediction\data\2hdatarecent.csv")
+        normed_test_data = normed_test_data.get(configs['data']['columns'])
+        normed_test_data = normed_test_data[-configs['data']['sequence_length']+1:]
+        norm_train_data = pd.read_csv(r"C:\Users\chris\Documents\Bitcoin_Prediction\data\2hdatarecent.csv")
+        norm_train_data = norm_train_data.get(configs['data']['columns'])
+        norm_train_data = norm_train_data[-configs['data']['sequence_length']+1:]
+        normed_test_data = DataLoader.normalise_windows2(model,window_data = normed_test_data, single_window=True)
+        norm_train_data = DataLoader.normalise_windows2(model,window_data =norm_train_data, single_window=True)
+        print(normed_test_data)
+        model.predict_sequences_multipleNew(normed_test_data,norm_train_data)
+
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,7 @@
 {
 	"data": {
 		"filename": "2hdata.csv",
+		"recentName": "2hdatarecent.csv",
 		"columns": [
 			"close",
 			"volume",
@@ -12,7 +13,7 @@
 		"normalise": true
 	},
 	"training": {
-		"epochs": 15,
+		"epochs": 31,
 		"batch_size": 30
 	},
 	"model": {
