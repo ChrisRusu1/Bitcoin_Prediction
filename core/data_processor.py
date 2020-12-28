@@ -13,6 +13,7 @@ class DataLoader():
         self.data_test  = dataframe.get(cols).values[i_split:]
         self.len_train  = len(self.data_train)
         self.len_test   = len(self.data_test)
+        self.currentData = dataframe.get(cols).values[-30:]
         self.len_train_windows = None
 
     def get_test_data(self, seq_len, normalise):
@@ -31,6 +32,14 @@ class DataLoader():
 
         x = data_windows[:, :-1]
         y = data_windows[:, -1, [0]]
+        return x,y
+
+    def normData(self,seq_len,normalise):
+  
+        data_windows = np.array(self.currentData).astype(float)
+        data_windows = self.normalise_windows2(data_windows, single_window=False) if normalise else data_windows
+        x = data_windows[:, :]
+        y = data_windows[:, 0]
         return x,y
 
     def get_train_data(self, seq_len, normalise):

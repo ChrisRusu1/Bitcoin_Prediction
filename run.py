@@ -38,7 +38,7 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
 
 
 def main():
-    do = 2
+    do = 4
     if do == 0:
         configs = json.load(open('config.json', 'r'))
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
@@ -57,14 +57,20 @@ def main():
             normalise=configs['data']['normalise']
         )
 
-        '''
+        x_test, y_test = data.get_test_data(
+            seq_len=configs['data']['sequence_length'],
+            normalise=configs['data']['normalise']
+        )      
         # in-memory training
         model.train(
             x,
             y,
             epochs = configs['training']['epochs'],
             batch_size = configs['training']['batch_size'],
-            save_dir = configs['model']['save_dir']
+            save_dir = configs['model']['save_dir'],
+            X_test = x_test,
+            Y_test = y_test,
+            saveName = str(configs['training']['epochs'] )
         )
         '''
         # out-of memory generative training
@@ -80,11 +86,8 @@ def main():
             steps_per_epoch=steps_per_epoch,
             save_dir=configs['model']['save_dir']
         )
+        '''
 
-        x_test, y_test = data.get_test_data(
-            seq_len=configs['data']['sequence_length'],
-            normalise=configs['data']['normalise']
-        )
 
         predictions = model.predict_sequences_multiple(x_test, configs['data']['sequence_length'], configs['data']['sequence_length'])
         # predictions = model.predict_sequence_full(x_test, configs['data']['sequence_length'])
@@ -92,6 +95,41 @@ def main():
 
         plot_results_multiple(predictions, y_test, configs['data']['sequence_length'])
         # plot_results(predictions, y_test)
+    elif do == -1:
+        
+        configs = json.load(open('config.json', 'r'))
+        if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
+
+        data = DataLoader(
+            os.path.join('data', 
+            configs['data']['filename']),
+            configs['data']['train_test_split'],
+            configs['data']['columns']
+        )
+
+        model = Model()
+        model.build_model(configs)
+        x, y = data.get_train_data(
+            seq_len=configs['data']['sequence_length'],
+            normalise=configs['data']['normalise']
+        )
+
+        x_test, y_test = data.get_test_data(
+            seq_len=configs['data']['sequence_length'],
+            normalise=configs['data']['normalise']
+        )      
+        # in-memory training
+    
+        model.train(
+            x,
+            y,
+            epochs = configs['training']['epochs'] ,
+            batch_size = configs['training']['batch_size'],
+            save_dir = configs['model']['save_dir'],
+            X_test = x_test,
+            Y_test = y_test,
+            saveName = str(configs['training']['epochs'])
+        )
     elif do == 1:
         configs = json.load(open('config.json', 'r'))
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
@@ -116,7 +154,7 @@ def main():
 
         plot_results_multiple(predictions, y_test, configs['data']['sequence_length']) #configs['data']['sequence_length']
         #plot_results(predictions, y_test)
-    else:
+    elif do == 2:
         configs = json.load(open('config.json', 'r'))
         if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
         model = Model()
@@ -131,8 +169,26 @@ def main():
         normed_test_data = DataLoader.normalise_windows2(model,window_data = normed_test_data, single_window=True)
         norm_train_data = DataLoader.normalise_windows2(model,window_data =norm_train_data, single_window=True)
         print(normed_test_data)
-        model.predict_sequences_multipleNew(normed_test_data,norm_train_data)
+        test = data.currentData
+        model.predict_sequences_multipleSecondAttempt(test,30)
+    else:
+        
+        configs = json.load(open('config.json', 'r'))
+        if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
+        model = Model()
+        model.build_model(configs)
+        
+        data = DataLoader(
+            os.path.join('data', configs['data']["recentName"]),
+            configs['data']['train_test_split'],
+            configs['data']['columns']
+        )
+        model.load_model(r"C:\Users\chris\Documents\Bitcoin_Prediction\saved_models_Test\27122020-171426-e101testv3.h5")
+        testdata,printData = data.normData(seq_len=30,normalise = True)
 
+        
+        predictions = model.predict_sequences_multipleSecondAttempt(testdata, 29)
+        plot_results_multiple(predictions,printData,29)
 
 if __name__ == '__main__':
     main()

@@ -74,5 +74,5 @@ if doit:
     #stocRSI
     data['StotchRSI'] = StochRSI_EMA(data["close"])
 
-
-data.to_csv(r"C:\Users\ZeePu\Documents\python workspace\bitcoin model\data\2hdata.csv")
+data = data.round(4)
+data.to_csv(r"C:\Users\chris\Documents\Bitcoin_Prediction\data\data2.csv")

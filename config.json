@@ -4,7 +4,6 @@
 		"recentName": "2hdatarecent.csv",
 		"columns": [
 			"close",
-			"volume",
 			"ewm8","ewm13","ewm21","ewm55","StotchRSI"
 			
 		],
@@ -13,31 +12,27 @@
 		"normalise": true
 	},
 	"training": {
-		"epochs": 31,
-		"batch_size": 30
+		"epochs": 101,
+		"batch_size": 40
 	},
 	"model": {
 		"loss": "mse",
 		"optimizer": "adam",
-		"save_dir": "saved_models",
+		"save_dir": "saved_models_Test",
 		"layers": [
 
 			{
 				"type": "lstm",
 				"neurons": 400,
 				"input_timesteps": 29,
-				"input_dim": 7,
+				"input_dim": 6,
 				"return_seq": true
 			},
 			{
 				"type": "dropout",
 				"rate": 0.2
 			},
-			{
-				"type": "lstm",
-				"neurons": 400,
-				"return_seq": true
-			},
+			
 			{
 				"type": "lstm",
 				"neurons": 400,
